@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basic Vue Js - HelloWorld App</title>
+
+    <!-- https://google.github.io/material-design-icons/#icon-font-for-the-web -->
+    <!-- Using via Google Web Fonts <3-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+    <!-- https://tailwindcss.com/docs/installation -->
+    <!-- Using Tailwind via CDN -->
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
+
+    <!-- https://v3.vuejs.org/guide/installation.html#release-notes -->
+    <!-- Vue CDN -->
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <section id="app" class="overflow-hidden font-mono text-gray-700 body-font h-full">
+        <div class="p-10  placeholder-green-800  text-center">
+            <h3 class="text-2xl ">Photo Gallery ( {{ count }} )</h3>
+            <h4>Liked: {{ countliked }}</h4>
+        </div>
+
+        <i v-show="!search"
+            class="material-icons flex flex-wrap text-right text-4xl mr-32 cursor-pointer md:justify-end "
+            @click="startSearch">search</i>
+        <div v-show="search" class="flex flex-wrap justify-center ml-auto md:flex-no-wrap md:justify-end">
+            <input
+                class="w-1/4 px-4 py-2 mr-2 text-base text-blue-700 bg-gray-100 border-transparent rounded-lg focus:border-gray-500 focus:bg-white focus:ring-0 lg:w-full xl:w-1/3"
+                placeholder="Please enter text for searching photos." type="text" v-model="inputSearch"
+                @keyup="searching">
+            <button
+                class="inline-flex mr-28 px-4 py-2 font-semibold text-white transition duration-500 ease-in-out transform rounded-lg shadow-xl bg-gradient-to-r from-blue-700 hover:from-blue-600 to-blue-600 hover:to-blue-700 hover:-translate-y-1 hover:scale-110 focus:ring focus:outline-none"
+                @click="startSearch">
+                Cancel
+            </button>
+
+        </div>
+
+        <div style="height:36rem ;"
+            class=" w-full shadow-lg bg-gray-900 flex flex-row item-center justify-center my-7 p-4"
+            v-show="showpic.check">
+
+            <div class="w-1/2 flex item-center justify-end ">
+                <img class="h-full " v-bind:src="pics[showpic.index].img">
+            </div>
+            <h5 class="w-5/12 font-light text-2xl  tracking-wider uppercase p-3 ml-10 my-auto text-gray-200 ">
+                <span class="my-9 text-4xl ">{{pics[showpic.index].Pname}} </span> <br>
+                {{pics[showpic.index].Oname}} </h5>
+
+            <div class="flex justify-end ">
+                <i class="material-icons  text-3xl self-start cursor-pointer text-gray-200"
+                    @click="check(-1)">highlight_off</i></div>
+        </div>
+
+        <div class="grid gap-4 grid-cols-4 flex items-start px-3 mx-auto pt-7 ">
+            <div class="container px-5 mx-auto lg:px-3 pt-7 " v-for="(pic,index) in pics" v-show="pic.show">
+                <div class=" flex flex-wrap w-full">
+                    <div class="w-full p-1 md:p-2 shadow-2xl rounded-lg  ">
+
+                        <img v-bind:src="pic.img" class="cursor-pointer object-cover h-48 w-full rounded-lg shadow-2xl"
+                            @click="check(index)" @dblclick="toggleDone(index)">
+
+                        <div class=" flex justify-between w-auto h-1/2 mx-auto cursor-pointer"
+                            @click="toggleDone(index)">
+                            <div class="pt-3">
+                                <h3 class="font-normal text-sm">{{pic.Pname}}</h3>
+                                <span class="text-xs ">{{pic.Oname}}</span>
+                            </div>
+                            <i v-show="pic.done" class="material-icons text-2xl  text-red-500 mr-3">favorite</i>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <footer class="text-gray-700 border-t body-font mt-32">
+            <div
+                class="container flex flex-col flex-wrap p-8 mx-auto md:items-center lg:items-start md:flex-row md:flex-no-wrap ">
+                <div class="flex-shrink-0 w-64 mx-auto text-center md:mx-0 md:text-left">
+                    <a class="flex items-center justify-center font-medium text-gray-900 title-font md:justify-start ">
+
+                        <span class="material-icons text-9xl py-12">
+                            face_retouching_natural
+                        </span>
+                    </a>
+                </div>
+                <div class="flex flex-wrap flex-grow mt-8 -mb-10 text-left md:pl-20 md:mt-0 ">
+                    <div class="w-full px-4 lg:w-1/3 md:w-1/2">
+                        <h1 class="mb-3 text-sm font-semibold tracking-widest text-blue-700 uppercase title-font">
+                            Product
+                        </h1>
+                        <nav class="mb-10 list-none">
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800">Email Templates</a>
+                            </li>
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800">Web Templates</a>
+                            </li>
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800">Figma Files</a>
+                            </li>
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800">Sketch Files</a>
+                            </li>
+                        </nav>
+                    </div>
+                    <div class="w-full px-4 lg:w-1/3 md:w-1/2">
+                        <h1 class="mb-3 text-sm font-semibold tracking-widest text-blue-700 uppercase title-font">
+                            Company
+                        </h1>
+                        <nav class="mb-10 list-none">
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800">Home</a>
+                            </li>
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800">About</a>
+                            </li>
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800">Carriers</a>
+                            </li>
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800">Pricing</a>
+                            </li>
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800"> Security</a>
+                            </li>
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800"> Contact Us</a>
+                            </li>
+                        </nav>
+                    </div>
+                    <div class="w-full px-4 lg:w-1/3 md:w-1/2">
+                        <h1 class="mb-3 text-sm font-semibold tracking-widest text-blue-700 uppercase title-font">
+                            Legal
+                        </h1>
+                        <nav class="mb-10 list-none">
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800">Privacy Policy</a>
+                            </li>
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800">Terms Of Service</a>
+                            </li>
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800">Trademark Policy</a>
+                            </li>
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800">Inactivity Policy</a>
+                            </li>
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800"> DPA</a>
+                            </li>
+                            <li>
+                                <a class="text-sm text-gray-600 hover:text-gray-800">SLA</a>
+                            </li>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-blueGray-900">
+                <div class="container flex flex-col flex-wrap px-5 py-6 mx-auto sm:flex-row">
+                    <p class="text-sm text-center text-gray-200 sm:text-left ">© Your Company 2020
+                    </p>
+                    <span class="inline-flex justify-center mt-2 sm:ml-auto sm:mt-0 sm:justify-start">
+                        <a class="text-white hover:text-blue-500">
+                            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                class="w-5 h-5" viewBox="0 0 24 24">
+                                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
+                            </svg>
+                        </a>
+                        <a class="ml-4 text-white hover:text-blue-500">
+                            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                class="w-5 h-5" viewBox="0 0 24 24">
+                                <path
+                                    d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z">
+                                </path>
+                            </svg>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <!-- my main.js -->
+    <script src="./main.js"></script>
+    <script src="./components/PhotoItem.js"></script>
+    <script src="./components/PhotoSearch.js"></script>
+    <script src="./components/PhotoView.js"></script>
+
+</body>
+
+</html>
