@@ -1,4 +1,4 @@
-const app = {
+const app = Vue.createApp({
     data() {
         return {
             pics: [{
@@ -45,8 +45,7 @@ const app = {
                 }
 
             ],
-            search: false,
-            inputSearch: '',
+            
             showpic: {
                 check: false,
                 index: 0
@@ -54,13 +53,7 @@ const app = {
         }
     },
     methods: {
-        toggleDone(index) {
-            this.pics[index].done = !this.pics[index].done
-        },
-        startSearch() {
-            this.search = !this.search;
-            this.inputSearch = '';
-        },
+        
         check(index) {
             if (index == -1) {
                 this.showpic.check = false
@@ -77,17 +70,7 @@ const app = {
         countliked() {
             return this.pics.filter(p => p.done).length
         },
-        searching() {
-            for (let i = 0; i < this.pics.length; i++) {
-                if (this.pics[i].Pname.search(this.inputSearch) !== -1 || this.pics[i].Oname.search(this.inputSearch) !== -1) {
-                    this.pics[i].show = true
-                } else {
-                    console.log(i)
-                    this.pics[i].show = false
-                }
-            }
-        }
+        
     }
 
-}
-Vue.createApp(app).mount('#app')
+})
